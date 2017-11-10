@@ -5,6 +5,6 @@ a{text-decoration: none;color: #666;}
 li{list-style: none;}
 input{ border: 0; outline: none;}
 em{font-style: normal;}
-i{font-style: italic}
+i{font-style: inherit}
 .clear:after{ content: "."; clear: both; overflow: hidden; display: block;height: 0; visibility: hidden;}
 .clear{ zoom: 1;}

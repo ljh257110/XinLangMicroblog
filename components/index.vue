@@ -6,7 +6,6 @@
 </template>
 
 <script>
-	import $ from "jquery";
 	import xheader from "./xheader.vue"
 	export default {
 		data(){
@@ -24,5 +23,4 @@
 </script>
 
 <style>
-	
 </style>
