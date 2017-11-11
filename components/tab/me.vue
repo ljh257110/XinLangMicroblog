@@ -8,7 +8,7 @@
 							<div class="media-main"><img src="http://tva3.sinaimg.cn/crop.0.1.510.510.180/0062LSdrjw8fbmfkj0tt7j30e60e83z1.jpg" height="50" width="50"></div>
 						</div>
 						<div class="box-col item-list">
-							<div class="item-main txt-s mct-a txt-cut" data-node="cNameUsr">我灬的天空
+							<div class="item-main txt-s mct-a txt-cut" data-node="cNameUsr"><span class="username"></span>
 								<a data-node="cIconLink" href="javascript:;" data-act-type="hover" class="btn btn-nvip"><i class="icon iconfont icon-huangguan"></i><i class="icon-font iconfont icon-icon"></i></a>
 							</div>
 							<div class="item-minor txt-s mct-d" data-node="cTxtUsr">简介：哈哈，</div>
@@ -86,7 +86,16 @@
 			myhomepage: function(){
 				window.location.href = "#/myhomepage";
 			}
-		}
+		},
+		data:function(){
+			return{
+				username:'',
+			}
+		},
+		mounted(){
+			this.username = this.$store.state.username;
+			$(".username").html(this.username);
+		},
 	}
 </script>
 

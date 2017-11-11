@@ -21,7 +21,7 @@
 			<div class="write-top">
 				<div class="close" @click='close'>×</div>
 				<div class="myImg"><img src="../resource/images/myImg.jpg"/></div>
-				<div class="send" :class="{canSend:numed}"><p>发送</p></div>
+				<div @click='send' class="send" :class="{canSend:numed}"><p>发送</p></div>
 				<span class="num" v-show='numed'>{{numed}}</span>
 			</div>
 			<div class="mian">
@@ -34,6 +34,7 @@
 </template>
 <script>
 	import $ from "jquery";
+	
 /*	$(".tab p").find("a").addEventListener('click',function(){
 		alert(1);
 	})*/
@@ -45,7 +46,7 @@
 					text:'首页',
 					id:1,
 					href:'#/index/tab1',
-					left:"<p class='username' style='padding-left: 12px;float: left;'>桑景瑞</p><span class='more' style='padding-left: 5px;float: left;transform:rotateZ(90deg);-ms-transform:rotateZ(90deg);-moz-transform:rotateZ(90deg); -webkit-transform:rotateZ(90deg);color: orange;'>></span>",
+					left:"<p class='username' style='padding-left: 12px;float: left;'>sjr</p><span class='more' style='padding-left: 5px;float: left;transform:rotateZ(90deg);-ms-transform:rotateZ(90deg);-moz-transform:rotateZ(90deg); -webkit-transform:rotateZ(90deg);color: orange;'>></span>",
 					
 				},{
 					text:'消息',
@@ -69,6 +70,7 @@
 				id:1,
 				num:'',
 				writeBool:false,
+				username:'',
 			}
 		},
 		methods:{
@@ -100,9 +102,26 @@
 			},
 			set:function(){
 				window.location.href='#/set';
+			},
+			send:function(){
+				var myDate = new Date();
+				var mytime = myDate.toLocaleTimeString();
+				var self = this;
+				$.ajax({
+					type:"post",
+					url:"http://10.30.152.85:3000/users/send",
+					data:{username:self.username,text:self.num,time:mytime},
+					success:function(data){
+						alert(data);
+						location.reload();
+						self.writeBool = !self.writeBool;						
+					}
+				})
 			}
 		},
 		mounted(){
+			this.username = this.$store.state.username;
+			$(".username").html(this.username);
 			var self = this;
 			function abc(){
 				var url = window.location.href;
@@ -124,9 +143,14 @@
 						self.id = 4;
 						break;					
 				}
-			}
+			};
 			abc();
 			this.choose(this.id);
+/*			function username(){
+				this.username = $.cookie('username');
+				$('.username').html(this.username);
+			};
+			username();*/
 		},
 		components:{
 			

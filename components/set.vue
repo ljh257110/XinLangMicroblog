@@ -53,7 +53,7 @@
 				</div>
 			</div>
 			<div class="card card6" id="boxId_1510216162776_13">
-				<a data-act-type="hover" class=" btn-red">退出当前帐号 </a>
+				<a data-act-type="hover" class=" btn-red" @click='logout'>退出当前帐号 </a>
 			</div>
 			<div id="boxId_1510216162776_14"></div>
 		</div>
@@ -66,6 +66,16 @@
 		methods:{
 			back:function(){
 				window.location.href='#/index';
+			},
+			logout:function(){
+				$.ajax({
+					type:"post",
+					url:"http://10.30.152.85:3000/users/logout",
+					success:function(data){
+						alert(data);
+						window.location.href = '#/login';
+					}
+				})
 			}
 		}
 	}

@@ -1,7 +1,8 @@
 <template>
-	<div>
+	<div style="overflow: auto; height: 667px;" v-scroll="loadMore">
+	<div  id="fix">
 		<!---->
-		<div v-for="n in news" class="card card9 line-around" data-act-type="hover" data-jump="/status/Fu8menGs2" id="boxId_1510127736127_62">
+		<div v-for="n in news" class="card card9 line-around" data-act-type="hover" data-jump="/status/Fu8menGs2" id="boxId_1510127736127_62" @click="weibocontent(n.id)" >
 			<div class="vip-card" style="background-image: url(&quot;https://img.t.sinajs.cn/t6/skin/public/feed_cover/star_104_os7.png&quot;); z-index: 0;"></div>
 			<header class="layout-box media-graphic">
 				<a href="https://m.weibo.cn/u/2718604160?uid=2718604160&amp;luicode=20000174" class="mod-media size-xs">
@@ -18,15 +19,15 @@
 				<div class="media-pic-list">
 					<ul>
 						<li v-for="img in n.img"><img data-node="pic" data-act-type="hover" :src="img" class="loaded" @click="showimg(img)"></li>
-						<!--<li><img data-node="pic" data-act-type="hover" src="http://wx3.sinaimg.cn/thumb180/a20a9b80ly1flantdu91rj20790f2mxp.jpg" class="loaded"></li>
-						<li><img data-node="pic" data-act-type="hover" src="http://wx1.sinaimg.cn/thumb180/a20a9b80ly1flanyxuo9yj20gh0bvq3l.jpg" class="loaded"></li>-->
+
 					</ul>
 				</div>
+				
 			</section>
 			<footer class="more-detail line-top layout-box box-center-v">
-				<a href="javascript:void(0);" class="box-col txt-s" data-act-type="hover" data-node="forward"><i class="icon-font icon-font-forward iconfont icon-zhuanfa"></i><em class="num mct-d">{{n.forward}}</em></a><i class="line-gradient"></i>
-				<a href="javascript:void(0);" class="box-col txt-s" data-act-type="hover" data-node="comment"><i class="icon-font icon-font-comment iconfont icon-iconheji-"></i><em class="num mct-d">{{n.comment}}</em></a><i class="line-gradient"></i>
-				<a href="javascript:void(0);" class="box-col txt-s" data-act-type="hover" data-node="like"><i class="icon icon-likesmall iconfont icon-dianzan-copy"></i><em class="num mct-d">{{n.like}}</em></a>
+				<a href="#/weibocontent/comment" class="box-col txt-s" data-act-type="hover" data-node="forward"><i class="icon-font icon-font-forward iconfont icon-zhuanfa"></i><em class="num mct-d">{{n.forward}}</em></a><i class="line-gradient"></i>
+				<a href="#/weibocontent/comment" class="box-col txt-s" data-act-type="hover" data-node="comment"><i class="icon-font icon-font-comment iconfont icon-iconheji-"></i><em class="num mct-d">{{n.comment}}</em></a><i class="line-gradient"></i>
+				<a href="#/weibocontent/comment" class="box-col txt-s" data-act-type="hover" data-node="like"><i class="icon icon-likesmall iconfont icon-dianzan-copy"></i><em class="num mct-d">{{n.like}}</em></a>
 			</footer>
 		</div>
 		<!--图片放大-->
@@ -37,8 +38,8 @@
 				</div>
 			</div>
 			<div class="ctrlbar" style="position:fixed">
-				<a id="J-zan" href="javascript:;" class=""><i class="icon animated  icon-liked iconfont icon-dianzan"></i><span id="J-zan-text" class="zan" style="display: none;">赞</span><span id="J-zan-count" data-num="0" style="">10</span></a>
-				<a id="J-close" @click="showimg" >关闭</a>
+				<a id="J-zan" href="javascript:;" class=""><i class="icon animated  icon-liked iconfont icon-dianzan" :style="{'color': colorbool?'orange':'#fff'}" @click="like"></i><span id="J-zan-text" class="zan" style="display: none;">赞</span><span id="J-zan-count" data-num="0" style="">{{num}}</span></a>
+				<a id="J-close" @click="showimg">关闭</a>
 			</div>
 		</div>
 		<!--底部弹出框-->
@@ -52,6 +53,31 @@
 				</section>
 			</div>
 		</div>
+		<div class="appTips">
+			<a href="javascript:;" ontouchstart="">微博内打开</a>
+		</div>
+		<!--更多加载-->
+				<!--<div class="line-around layout-box mod-pagination" data-node="turnPage" style="display: block;">
+					<a href="javascript:;" class="btn box-col line-right isDisabled" data-node="prevPage">上一页</a>
+					<a href="javascript:;" class="box-col">
+						<div class="select-wrapper layout-box box-center-h">
+							<select name="" id="" data-node="pageSelect">
+								<option value="1">第1页</option>
+								<option value="2">第2页</option>
+								<option value="3">第3页</option>
+								<option value="4">第4页</option>
+								<option value="5">第5页</option>
+								<option value="6">第6页</option>
+								<option value="7">第7页</option>
+								<option value="8">第8页</option>
+								<option value="9">第9页</option>
+								<option value="10">第10页</option>
+							</select><span class="select-txt" data-node="curPage" data-curpage="1">第1页</span><span class="plus"><i class="icon-font icon-font-arrow-down"></i></span></div>
+					</a>
+					<a href="javascript:;" class="btn box-col line-left" data-node="nextPage">下一页</a>
+				</div>-->
+				<div class="loading" data-node="more" style="display: block;"></div>
+	</div>
 	</div>
 </template>
 
@@ -61,22 +87,37 @@
 			return {
 				bool: false,
 				news: [],
-				imgbool:false,
-				img:""
+				imgbool: false,
+				img: "",
+				num:10,
+				colorbool:false
 			}
 		},
 		methods: {
+			like(){
+				console.log(this.colorbool)
+				if(!this.colorbool){
+					this.num += 1;
+				}else{
+					this.num -= 1;
+				}
+				this.colorbool = !this.colorbool;
+				
+			},
 			popmenu() {
 				this.bool = !this.bool
 			},
-			showimg(img){
+			showimg(img) {
 				this.imgbool = !this.imgbool;
 				this.img = img;
+			},
+			weibocontent(id) {
+				this.$store.state.userid = id;
 			},
 			loadMore: function() {
 				var self = this;
 				$.ajax({
-					url: "http://10.30.152.85:3000/users/mycontent",
+					url: "http://10.30.152.85:3000/users/content",
 					type: "post",
 					success: function(data) {
 						//	console.log(data.newslist)
@@ -87,9 +128,26 @@
 			}
 
 		},
+		directives: {
+					scroll: {
+						bind: function(el, binding) {
+							el.addEventListener("scroll", function(e) {
+								if(e.target.offsetHeight + e.target.scrollTop >= e.target.scrollHeight) {							
+									binding.value()
+								}
+							})
+						}
+					}
+		},
 		mounted() {
 			this.loadMore()
-		}
+			
+		},
+		/*watch:{
+			weibocontent(id){
+				this.$store.state.userid = id;
+			}
+		}*/
 	}
 </script>
 
@@ -291,7 +349,9 @@
 		margin: .625rem 0 .625rem .5rem;
 	}
 	
-
+	a {
+		color: #598abf;
+	}
 	
 	a,
 	img {
@@ -676,102 +736,188 @@
 		color: #FFF;
 		-webkit-animation: fadeInUp 0.5s ease-in-out both;
 	}
+	
 	.J-slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #000;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #000;
+	}
+	
+	.J-slider * {
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.J-slider .wrapper {
+		float: left;
+		z-index: 1;
+		overflow: hidden;
+		text-align: center;
+	}
+	
+	.J-slider .scroller {
+		z-index: 1;
+	}
+	
+	.J-slider .scroller img {
+		max-width: 100%;
+		vertical-align: middle;
+		opacity: 0;
+		-webkit-transition: opacity .3s ease-out;
+	}
+	
+	.J-slider .ctrlbar {
+		position: absolute;
+		bottom: 30px;
+		left: 0;
+		z-index: 99;
+		width: 100%;
+		line-height: 30px;
+		text-align: center;
+		color: #fff;
+	}
+	
+	.J-slider #J-zan {
+		float: right;
+		margin: 0 15px 0 0;
+	}
+	
+	.J-slider .ctrlbar a {
+		display: block;
+		width: 72px;
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+		font-size: 16px;
+		color: #fff;
+		background: rgba(128, 128, 128, .4);
+		-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .3) inset;
+		box-shadow: 0 0 1px rgba(0, 0, 0, .3) inset;
+		border-radius: 2px;
+		-webkit-border-radius: 2px;
+	}
+	
+	.J-slider #J-zan .icon {
+		float: left;
+		margin: 3px 0 0 10px;
+	}
+	
+	.animated {
+		-webkit-animation-duration: 1s;
+		animation-duration: 1s;
+		-webkit-animation-fill-mode: both;
+		animation-fill-mode: both;
+	}
+	
+	.icon-liked {
+		background-position: -3.125rem -2.5rem;
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+	
+	.icon {
+		display: inline-block;
+		/*background-image: url(../../img/lib/icons.a5c1305b.svg);*/
+		background-size: 6.875rem 10.3125rem;
+	}
+	
+	.J-slider #J-zan span {
+		width: 35px;
+		display: block;
+		height: 30px;
+		text-align: center;
+		float: left;
+	}
+	
+	.J-slider #J-zan #J-zan-count {
+		font-size: 15px;
+	}
+	
+	.J-slider #J-zan span {
+		width: 35px;
+		display: block;
+		height: 30px;
+		text-align: center;
+		float: left;
+	}
+	
+	.J-slider #J-close {
+		float: left;
+		margin: 0 0 0 15px;
+	}
+	@media (-webkit-min-device-pixel-ratio: 2), not all
+.line-bottom, .card-combine .line-around:not(.card9), .line-separate::after {
+    border: none;
+    background-image: linear-gradient(to bottom,transparent 50%,#dadada 50%,#dadada 100%);
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: bottom;
 }
-.J-slider * {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+.mod-pagination {
+    line-height: 43px;
+    font-size: .875rem;
 }
-.J-slider .wrapper {
-    float: left;
-    z-index: 1;
-    overflow: hidden;
+.line-around, .module {
+    background-color: #fff;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #d8d8d8;
+    box-sizing: border-box;
+    box-shadow: 0 1px 0.1875rem -0.125rem rgba(0,0,0,.2);
+}
+.mod-pagination .btn.isDisabled {
+    color: rgba(146,146,146,.4);
+}
+.mod-pagination .btn {
+    color: #929292;
     text-align: center;
 }
-.J-slider .scroller {
-    z-index: 1;
+.mod-pagination .box-col {
+    display: block;
 }
-.J-slider .scroller img {
-    max-width: 100%;
-    vertical-align: middle;
-    opacity: 0;
-    -webkit-transition: opacity .3s ease-out;
-}
-.J-slider .ctrlbar {
-    position: absolute;
-    bottom: 30px;
-    left: 0;
-    z-index: 99;
+.layout-box .box-col {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
     width: 100%;
-    line-height: 30px;
-    text-align: center;
-    color: #fff;
 }
-.J-slider #J-zan {
-    float: right;
-    margin: 0 15px 0 0;
+@media (-webkit-min-device-pixel-ratio: 2), not all
+.line-right, .line-separate::before, .card.col-1 .line-separate::before, .card.col-2 .line-separate::before, .card.col-3 .line-separate::before, .card.col-4 .line-separate::before, .card.col-5 .line-separate::before, .line-gradient {
+    border: none;
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(50%,transparent),color-stop(50%,#dadada),color-stop(100%,#dadada));
+    background-image: -webkit-linear-gradient(left,transparent 50%,#dadada 50%,#dadada 100%);
+    background-image: linear-gradient(to right,transparent 50%,#dadada 50%,#dadada 100%);
+    background-size: 1px 100%;
+    background-repeat: no-repeat;
+    background-position: right;
 }
-.J-slider .ctrlbar a {
-    display: block;
-    width: 72px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    background: rgba(128,128,128,.4);
-    -webkit-box-shadow: 0 0 1px rgba(0,0,0,.3) inset;
-    box-shadow: 0 0 1px rgba(0,0,0,.3) inset;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
+.line-right, .line-separate::before, .card.col-1 .line-separate::before, .card.col-2 .line-separate::before, .card.col-3 .line-separate::before, .card.col-4 .line-separate::before, .card.col-5 .line-separate::before, .line-gradient {
+    border-right: 1px solid #dadada;
 }
-.J-slider #J-zan .icon {
-    float: left;
-    margin: 3px 0 0 10px;
-}
-.animated {
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-}
-.icon-liked {
-    background-position: -3.125rem -2.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
-}
-.icon {
+.btn {
     display: inline-block;
-    /*background-image: url(../../img/lib/icons.a5c1305b.svg);*/
-    background-size: 6.875rem 10.3125rem;
+    vertical-align: middle;
+    text-decoration: none;
+    border-radius: .15625rem;
+    border: none;
 }
-.J-slider #J-zan span {
-    width: 35px;
-    display: block;
-    height: 30px;
+.card-combine>div:last-child {
+    box-shadow: 0 1px 0.1875rem -0.125rem rgba(0,0,0,.2);
+}
+.loading {
     text-align: center;
-    float: left;
+    height: 25px;
 }
-.J-slider #J-zan #J-zan-count {
-    font-size: 15px;
-}
-.J-slider #J-zan span {
-    width: 35px;
+.loading {
     display: block;
-    height: 30px;
-    text-align: center;
-    float: left;
-}
-.J-slider #J-close {
-    float: left;
-    margin: 0 0 0 15px;
+    min-height: 50px;
+    background: url("https://h5.sinaimg.cn/weibocn/v6/img/440/loading.96c5cf34.gif") no-repeat center center;
+    -webkit-background-size: 19px auto;
+    background-size: 19px auto;
 }
 </style>

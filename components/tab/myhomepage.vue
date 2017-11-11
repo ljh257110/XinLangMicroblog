@@ -4,7 +4,7 @@
 			<div class="overlay"></div>
 			<div class="mod-fil-img m-avatar-box"><span class="m-img-box"><img src="https://tva3.sinaimg.cn/crop.0.1.510.510.180/0062LSdrjw8fbmfkj0tt7j30e60e83z1.jpg"> <!----></span></div>
 			<div class="item-list" style="position: relative;">
-				<div class="mod-fil-name m-txt-cut"><span class="mod-fil-n"><span class="txt-shadow">我灬的天空</span>
+				<div class="mod-fil-name m-txt-cut"><span class="mod-fil-n"><span class="txt-shadow username"></span>
 					<!----><i class="m-icon iconfont icon-boy2"></i></span>
 					<!---->
 				</div>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+	import $ from "jquery";
 	import homepage from "./homepage.vue"
 	export default {
 		data: function() {
@@ -51,7 +52,8 @@
 					title: "微博",
 					href: "#/myhomepage/sina"
 				}],
-				id: 1
+				id: 1,
+				username:'',
 			}
 		},
 		methods: {
@@ -61,7 +63,11 @@
 		},
 		components: {
 			homepage
-		}
+		},
+		mounted(){
+			this.username = this.$store.state.username;
+			$(".username").html(this.username);
+		},
 	}
 </script>
 
