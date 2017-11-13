@@ -41,7 +41,7 @@
 			<div class="input_error hidden1">我是错误显示</div>
 			<p class="hint_12_tit">设置密码</p>
 			<div class="mod mod_more h5_input input_change_type"><input id="sms_pwd_input" disableemoticoninput="true" type="password" name="pwd" maxlength="16" placeholder="6~16位数字或字母，区分大小写" validate="pwd" @focus = "pwdfocus" @blur = "pwdblur">
-				<div id="sms_toggle_type" class="change_type" @click='showhidden'>隐藏</div>
+				<div id="sms_toggle_type" class="change_type" @click='showhidden'>显示</div>
 			</div>
 			<div class="input_error mb_-5 hidden2">我是错误显示</div>
 			<div class="mt_20">
@@ -123,10 +123,10 @@
 			showhidden: function(){
 				this.show = !this.show;
 				if(!this.show){
-					$("#sms_toggle_type").html("隐藏")
+					$("#sms_toggle_type").html("显示")
 					$("#sms_pwd_input").attr("type", "password");
 				}else{
-					$("#sms_toggle_type").html("显示")
+					$("#sms_toggle_type").html("隐藏")
 					$("#sms_pwd_input").attr("type", "text");
 				}
 			},

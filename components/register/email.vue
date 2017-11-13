@@ -7,7 +7,7 @@
 			<div class="input_error hidden1">我是错误显示</div>
 			<p class="hint_12_tit">设置密码</p>
 			<div class="mod mod_more h5_input input_change_type"><input id="email_pwd_input" type="password" disableemoticoninput="true" name="pwd" maxlength="16" validate="pwd" @focus = "pwdfocus" @blur = "pwdblur">
-				<a href="javascript:;" id="email_toggle_type" class="change_type" @click='showhidden'>隐藏</a>
+				<a href="javascript:;" id="email_toggle_type" class="change_type" @click='showhidden'>显示</a>
 			</div>
 			<div class="input_error mb_-5 hidden2">我是错误显示</div>
 			<p class="hint_12_tit">昵称</p>
@@ -113,10 +113,10 @@
 			showhidden: function(){
 				this.show = !this.show;
 				if(!this.show){
-					$("#email_toggle_type").html("隐藏")
+					$("#email_toggle_type").html("显示")
 					$("#email_pwd_input").attr("type", "password");
 				}else{
-					$("#email_toggle_type").html("显示")
+					$("#email_toggle_type").html("隐藏")
 					$("#email_pwd_input").attr("type", "text");
 				}
 			},
