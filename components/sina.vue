@@ -76,8 +76,8 @@
 			loadMore: function() {
 				var self = this;
 				$.ajax({
-					url: "http://127.0.0.1:8020/SinaDemo/resource/json/data.json",
-					type: "GET",
+					url: "http://10.30.152.85:3000/users/mycontent",
+					type: "post",
 					success: function(data) {
 						//	console.log(data.newslist)
 						self.news = self.news.concat(data)
@@ -93,7 +93,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	html,
 	body,
 	div,
@@ -291,9 +291,7 @@
 		margin: .625rem 0 .625rem .5rem;
 	}
 	
-	a {
-		color: #598abf;
-	}
+
 	
 	a,
 	img {

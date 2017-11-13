@@ -5,7 +5,7 @@
 			<div class="m-top-bar m-panel m-container-max m-topbar-max">
 				<div class="nav-box">
 					<div class="nav-left">
-						<div class="nav-ctrl"><a href="#/content" style="color: #636363;"><i class="m-font m-font-arrow-left iconfont icon-jiantou"></i>返回</a></div>
+						<div class="nav-ctrl"><a href="#/index/tab1" style="color: #636363;"><i class="m-font m-font-arrow-left iconfont icon-jiantou"></i>返回</a></div>
 					</div>
 					<div class="nav-main">
 						<h3 class="m-text-cut" >微博正文</h3></div>
@@ -188,7 +188,7 @@
 				bool: false,
 				news: [],
 				img:"",
-				id: 2,
+				id: "",
 				imgbool:false,
 				userid:"",
 				arr: [{
@@ -223,18 +223,29 @@
 			show(id) {
 				this.id = id;
 			},
+			sendid(){
+				this.id = this.$store.state.sendid;
+			},
 			loadMore: function() {
 				var self = this;
 				$.ajax({
-					url: "../resource/json/data-ljh.json",
-					type: "GET",
+					url: "http://10.30.152.85:3000/users/content",
+					type: "post",
 					success: function(data) {
 						//	console.log(data.newslist)
-						var len = data.length - 1;
+						for(var i = 0; i < data.length;i++){
+							if(data[i].id == self.$store.state.userid){
+								self.userid = i;
+								break;
+							}
+						}
+						
+						
+						
 						self.news = self.news.concat(data)                                         
 						console.log(self.news)
 						console.log(self.$store.state.userid);
-						self.userid = len - self.$store.state.userid;
+					
 						console.log(self.arr[0].num)
 						self.arr[0].num = self.news[self.userid].forward;
 						self.arr[1].num = self.news[self.userid].comment;
@@ -245,7 +256,8 @@
 
 		},
 		mounted() {
-			this.loadMore();		
+			this.loadMore();	
+			this.sendid();
 		}
 		
 	
@@ -1500,7 +1512,6 @@
     background-position: -88px 0;
 }
 @media screen and (max-width: 1024px)
-app.e2e95a6b.css:1
 .pswp__preloader {
     position: relative;
     left: auto;

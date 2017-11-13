@@ -188,7 +188,7 @@
 				bool: false,
 				news: [],
 				img:"",
-				id: 2,
+				id: "",
 				imgbool:false,
 				userid:"",
 				arr: [{
@@ -223,6 +223,9 @@
 			show(id) {
 				this.id = id;
 			},
+			sendid(){
+				this.id = this.$store.state.sendid;
+			},
 			loadMore: function() {
 				var self = this;
 				$.ajax({
@@ -230,11 +233,19 @@
 					type: "post",
 					success: function(data) {
 						//	console.log(data.newslist)
-						var len = data.length - 1;
+						for(var i = 0; i < data.length;i++){
+							if(data[i].id == self.$store.state.userid){
+								self.userid = i;
+								break;
+							}
+						}
+						
+						
+						
 						self.news = self.news.concat(data)                                         
 						console.log(self.news)
 						console.log(self.$store.state.userid);
-						self.userid = len - self.$store.state.userid;
+					
 						console.log(self.arr[0].num)
 						self.arr[0].num = self.news[self.userid].forward;
 						self.arr[1].num = self.news[self.userid].comment;
@@ -245,7 +256,8 @@
 
 		},
 		mounted() {
-			this.loadMore();		
+			this.loadMore();	
+			this.sendid();
 		}
 		
 	
@@ -1500,7 +1512,6 @@
     background-position: -88px 0;
 }
 @media screen and (max-width: 1024px)
-app.e2e95a6b.css:1
 .pswp__preloader {
     position: relative;
     left: auto;
