@@ -25,9 +25,9 @@
 				
 			</section>
 			<footer class="more-detail line-top layout-box box-center-v">
-				<a href="#/weibocontent/comment" class="box-col txt-s" data-act-type="hover" data-node="forward"><i class="icon-font icon-font-forward iconfont icon-zhuanfa"></i><em class="num mct-d">{{n.forward}}</em></a><i class="line-gradient"></i>
-				<a href="#/weibocontent/comment" class="box-col txt-s" data-act-type="hover" data-node="comment"><i class="icon-font icon-font-comment iconfont icon-iconheji-"></i><em class="num mct-d">{{n.comment}}</em></a><i class="line-gradient"></i>
-				<a href="#/weibocontent/comment" class="box-col txt-s" data-act-type="hover" data-node="like"><i class="icon icon-likesmall iconfont icon-dianzan-copy"></i><em class="num mct-d">{{n.like}}</em></a>
+				<a :href="arr[0].href" @click="sendid(arr[0].id)" class="box-col txt-s" data-act-type="hover" data-node="forward"><i class="icon-font icon-font-forward iconfont icon-zhuanfa"></i><em class="num mct-d">{{n.forward}}</em></a><i class="line-gradient"></i>
+				<a :href="arr[1].href" @click="sendid(arr[1].id)" class="box-col txt-s" data-act-type="hover" data-node="comment"><i class="icon-font icon-font-comment iconfont icon-iconheji-"></i><em class="num mct-d">{{n.comment}}</em></a><i class="line-gradient"></i>
+				<a :href="arr[2].href" @click="sendid(arr[2].id)" class="box-col txt-s" data-act-type="hover" data-node="like"><i class="icon icon-likesmall iconfont icon-dianzan-copy"></i><em class="num mct-d">{{n.like}}</em></a>
 			</footer>
 		</div>
 		<!--图片放大-->
@@ -90,7 +90,17 @@
 				imgbool: false,
 				img: "",
 				num:10,
-				colorbool:false
+				colorbool:false,
+				arr:[{
+					id:1,
+					href:"#/weibocontent/forward"
+				},{
+					id:2,
+					href:"#/weibocontent/comment"
+				},{
+					id:3,
+					href:"#/weibocontent/like"
+				}]
 			}
 		},
 		methods: {
@@ -103,6 +113,9 @@
 				}
 				this.colorbool = !this.colorbool;
 				
+			},
+			sendid(id){
+				this.$store.state.sendid = id;
 			},
 			popmenu() {
 				this.bool = !this.bool
@@ -151,7 +164,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	html,
 	body,
 	div,
@@ -240,7 +253,9 @@
 		font: inherit;
 		vertical-align: baseline;
 	}
-	
+	#fix{
+		background: #f2f2f2;
+	}
 	[data-jump] {
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent;
@@ -347,10 +362,6 @@
 		display: block;
 		text-align: center;
 		margin: .625rem 0 .625rem .5rem;
-	}
-	
-	a {
-		color: #598abf;
 	}
 	
 	a,
