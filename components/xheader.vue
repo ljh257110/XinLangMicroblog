@@ -121,7 +121,7 @@
 		},
 		mounted(){
 			this.username = this.$store.state.username;
-			$(".username").html(this.username);
+			$(".username").html(this.username?this.username:"sjr");
 			var self = this;
 			function abc(){
 				var url = window.location.href;
